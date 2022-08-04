@@ -1,12 +1,13 @@
 import checkComplete from "./components/checkComplete.js";
 import deleteIcon from "./components/deleteIcon.js";
 
-import { addTask } from './components/addTask.js'
-
+import { addTask } from './components/addTask.js';
+import { displayTasks } from './components/readTasks.js';
 ( () => {
 
 const btn = document.querySelector("[data-form-btn]");
 
 btn.addEventListener("click", addTask);
+displayTasks();
 
 })();

@@ -1,40 +1,46 @@
 import checkComplete from "./checkComplete.js";
 import deleteIcon from "./deleteIcon.js";
+import { displayTasks } from "./readTasks.js";
 
 export const addTask = (event) => {
-    const list = document.querySelector("[data-list]");
-    const task = createTask(event);
-    list.appendChild(task);
-
-}
-
-
-
-//Arrow funtions o funciones anonimas
-const createTask = (event) => {
     event.preventDefault();
-    const taskList = JSON.parse(localStorage.getItem('tasks')) || [];
+    const list = document.querySelector("[data-list]");
     const input = document.querySelector("[data-form-input]");
     const calendar = document.querySelector('[data-form-date]');
+
     const value = input.value;
     const date = calendar.value;
     const dateFormat = moment(date).format('DD/MM/YYYY');
+
+    if (value == '' || date == ''){
+        return
+    }
     
-    const task = document.createElement('li');
-    task.classList.add('card');
     input.value = "";
-    const taskContent = document.createElement('div');
-    taskContent.appendChild(checkComplete());
+    calendar.value = "";
 
     const taskObj = {
         value,
         dateFormat
     }
+    
+    list.innerHTML = '';
 
-    taskList.push(taskObj);
+    const taskList = JSON.parse(localStorage.getItem('tasks')) || [];
+    taskList.push({value, dateFormat});
 
     localStorage.setItem('tasks', JSON.stringify(taskList));
 
+    displayTasks();
+
+}
+
+//Arrow funtions o funciones anonimas
+export const createTask = ({value, dateFormat}) => {
+    const task = document.createElement('li');
+    task.classList.add('card');
+    const taskContent = document.createElement('div');
+    taskContent.appendChild(checkComplete());
     const titleTask = document.createElement('span');
     titleTask.classList.add('task');
     titleTask.innerText = value;
